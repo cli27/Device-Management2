@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SshDeviceToolkit", "SshDeviceToolkit\SshDeviceToolkit.csproj", "{2EC07563-C17E-4FD4-8F14-75022A2E038B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SshDeviceToolkit.Tests", "SshDeviceToolkit.Tests\SshDeviceToolkit.Tests.csproj", "{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SshDeviceToolkit.Runner", "SshDeviceToolkit.Runner\SshDeviceToolkit.Runner.csproj", "{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Debug|x64.Build.0 = Debug|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Debug|x86.Build.0 = Debug|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Release|x64.ActiveCfg = Release|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Release|x64.Build.0 = Release|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Release|x86.ActiveCfg = Release|Any CPU
+		{2EC07563-C17E-4FD4-8F14-75022A2E038B}.Release|x86.Build.0 = Release|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Debug|x64.Build.0 = Debug|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Debug|x86.Build.0 = Debug|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Release|x64.ActiveCfg = Release|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Release|x64.Build.0 = Release|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Release|x86.ActiveCfg = Release|Any CPU
+		{872277BD-CA07-4E5B-A6B0-3A2B341BB32A}.Release|x86.Build.0 = Release|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Release|x64.Build.0 = Release|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{6BAA3C82-7285-45B4-93A1-F886C6EE07C7}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
