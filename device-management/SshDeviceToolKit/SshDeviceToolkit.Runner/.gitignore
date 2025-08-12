@@ -1,0 +1,298 @@
+## -----------------------
+## .NET / C# (Visual Studio)
+## -----------------------
+ 
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+ 
+# MonoDevelop/Xamarin
+*.userprefs
+ 
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+ 
+# Visual Studio cache/options
+.vs/
+ 
+# Rider
+.idea/
+ 
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+ 
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+ 
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+ 
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+ 
+# Tye
+.tye/
+ 
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+ 
+# StyleCop
+StyleCopReport.xml
+ 
+# Visual Studio generated files
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+ 
+# Chutzpah
+_Chutzpah*
+ 
+# VC++ cache
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+ 
+# Profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+ 
+# Trace Files
+*.e2e
+ 
+# TFS
+$tf/
+ 
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+ 
+# TeamCity
+_TeamCity*
+ 
+# DotCover
+*.dotCover
+ 
+# Code coverage
+*.coverage
+*.coveragexml
+ 
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+ 
+# Sass
+.sass-cache/
+ 
+# Installshield
+[Ee]xpress/
+ 
+# DocProject
+DocProject/buildhelp/
+DocProject/Help/
+ 
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+ 
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+ 
+# Windows Store
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_Store/
+ 
+# Misc
+*.dbmdl
+*.pfx
+*.publishsettings
+node_modules/
+.vscode/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+ 
+# Local History
+.localhistory/
+ 
+# Installers
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+ 
+# Temporary files
+~$*
+*.tmp
+*.bak
+ 
+---
+ 
+## --------------
+## Python
+## --------------
+ 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+ 
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+ 
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+ 
+# PyInstaller
+*.manifest
+*.spec
+ 
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+ 
+# Translations
+*.mo
+*.pot
+ 
+# Django stuff
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+ 
+# Flask stuff
+instance/
+.webassets-cache
+ 
+# Scrapy stuff
+.scrapy
+ 
+# Sphinx docs
+docs/_build/
+ 
+# PyBuilder
+target/
+ 
+# IPython
+profile_default/
+ipython_config.py
+ 
+# Jupyter Notebook
+*.ipynb_checkpoints
+**/.ipynb_checkpoints
+ 
+# Pyre type checker
+.pyre/
+ 
+# pytype
+.pytype/
+ 
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+ 
+# pyright
+.pyright/
+ 
+# Cython
+cython_debug/
+ 
+# VS Code Python settings
+.python-version

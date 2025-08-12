@@ -13,5 +13,7 @@ namespace SshDeviceToolkit
         Task<string> StartNgacsAsync(string serialNumber, string ipAddress, int port, string username, string password);
         Task<string> PingDeviceAsync(string ipAddress);
         Task<OnlineCheckResult> CheckIfOnlineAsync(string ipAddress, int port, string username, string password);
+        Task<DeviceDetails?> GetDeviceDetailsFromDmp2Async(string serialNumber);
+
     }
 }

@@ -34,35 +34,155 @@ namespace SshDeviceToolkit
         }
 
         public static string GeneratePassword(string clientId, string wanMacClean12Hex)
-        => clientId.Trim() + "!" + wanMacClean12Hex;
+            => clientId.Trim() + "!" + wanMacClean12Hex;
 
+        // ========================= NEW: IP1/IP2 + runtime-aware device details =========================
+        public async Task<DeviceDetails?> GetDeviceDetailsFromDmp2Async(string serialNumber)
+        {
+            string? token = await GetAuthTokenAsync();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Console.WriteLine("❌ Could not obtain token for DMP parameter call.");
+                return null;
+            }
+
+            var pathsToTry = new[]
+            {
+                "+Status.Network",
+                "+Status.Network.EthernetWAN",
+                "+Status.Network.Mobile",
+                "+Status.Network.LAN"
+            };
+
+            string? ip1 = null;  // Prefer WAN/Mobile
+            string? ip2 = null;  // Prefer LAN
+            string? wanMac = null;
+
+            long ip1Runtime = -1;
+            long ip2Runtime = -1;
+
+            var swGlobal = Stopwatch.StartNew();
+
+            foreach (var path in pathsToTry)
+            {
+                var (ok, root) = await CallParameterPath(token, serialNumber, path);
+                if (!ok || root.ValueKind == JsonValueKind.Undefined) continue;
+
+                // Capture WAN MAC once (prefer EthernetWAN first, else any MAC)
+                wanMac ??= FindMacAddress(root);
+
+                // IP1: prefer EthernetWAN/Mobile
+                if (ip1 == null)
+                {
+                    var eth = FindFirstValueForKey(root, "EthernetWAN");
+                    var ethIp = FindValueUnderKey(eth, "IPv4Address");
+
+                    var mob = FindFirstValueForKey(root, "Mobile");
+                    var mobIp = FindValueUnderKey(mob, "IPv4Address");
+
+                    string? candidate = null;
+                    if (LooksLikeIp(ethIp)) candidate = StripPort(ethIp);
+                    else if (LooksLikeIp(mobIp)) candidate = StripPort(mobIp);
+
+                    if (!string.IsNullOrWhiteSpace(candidate))
+                    {
+                        ip1 = candidate;
+                        ip1Runtime = swGlobal.ElapsedMilliseconds;
+                    }
+                }
+
+                // IP2: prefer LAN
+                if (ip2 == null)
+                {
+                    var lan = FindFirstValueForKey(root, "LAN");
+                    var lanIp = FindValueUnderKey(lan, "IPv4Address");
+                    if (LooksLikeIp(lanIp))
+                    {
+                        ip2 = StripPort(lanIp);
+                        ip2Runtime = swGlobal.ElapsedMilliseconds;
+                    }
+                }
+
+                // As a generic fallback, if either is still null and this blob has any IPv4
+                if (ip1 == null || ip2 == null)
+                {
+                    var anyIp = FindValueUnderKey(root, "IPv4Address");
+                    if (LooksLikeIp(anyIp))
+                    {
+                        var any = StripPort(anyIp);
+                        if (ip1 == null && any != null) { ip1 = any; ip1Runtime = swGlobal.ElapsedMilliseconds; }
+                        else if (ip2 == null && any != null) { ip2 = any; ip2Runtime = swGlobal.ElapsedMilliseconds; }
+                    }
+                }
+
+                if (ip1 != null && ip2 != null && !string.IsNullOrWhiteSpace(wanMac))
+                    break;
+            }
+
+            if (string.IsNullOrWhiteSpace(wanMac) && (ip1 == null && ip2 == null))
+            {
+                Console.WriteLine("❌ Could not extract IPs/MAC from DMP data.");
+                return null;
+            }
+
+            return new DeviceDetails
+            {
+                Ip1 = ip1,
+                Ip2 = ip2,
+                WanMacRaw = wanMac ?? "",
+                Ip1RuntimeMs = Math.Max(0, ip1Runtime),
+                Ip2RuntimeMs = Math.Max(0, ip2Runtime)
+            };
+        }
+        // =================================================================================================
 
         public async Task<string> IndexRestartAsync(string serialNumber, string clientId, string? ipOverride = null)
         {
             try
             {
-                var deviceInfo = await GetDeviceDetailsFromDmpAsync(serialNumber);
-                if (deviceInfo == null)
-                    return $"❌ Failed to retrieve device info for {serialNumber} (IP/WAN MAC not found). Choose 'getinfo' to debug.";
+                // Prefer new details method (IP1/IP2 + runtimes). Fallback to old tuple method if needed.
+                DeviceDetails? details = await GetDeviceDetailsFromDmp2Async(serialNumber);
+                if (details == null)
+                {
+                    var legacy = await GetDeviceDetailsFromDmpAsync(serialNumber);
+                    if (legacy == null)
+                        return $"❌ Failed to retrieve device info for {serialNumber} (IP/WAN MAC not found). Choose 'getinfo' to debug.";
 
-                var cleanWanMac = CleanWanMacForPassword(deviceInfo.Value.WanMacRaw);
+                    details = new DeviceDetails
+                    {
+                        Ip1 = legacy.Value.Ip,
+                        Ip2 = null,
+                        WanMacRaw = legacy.Value.WanMacRaw,
+                        Ip1RuntimeMs = 0,
+                        Ip2RuntimeMs = -1
+                    };
+                }
+
+                var cleanWanMac = CleanWanMacForPassword(details.WanMacRaw);
                 if (string.IsNullOrWhiteSpace(cleanWanMac) || cleanWanMac.Length != 12)
-                    return $"❌ WAN MAC missing/invalid from DMP response, cannot compute SSH password (expected 12 hex). Got: '{deviceInfo.Value.WanMacRaw}'";
+                    return $"❌ WAN MAC missing/invalid from DMP response, cannot compute SSH password (expected 12 hex). Got: '{details.WanMacRaw}'";
 
-                string ipCandidate = ipOverride ?? deviceInfo.Value.Ip;
+                // Prefer: override > IP1 (WAN/Mobile) > IP2 (LAN)
+                string ipCandidate = ipOverride ?? details.Ip1 ?? details.Ip2 ?? "";
+                if (string.IsNullOrWhiteSpace(ipCandidate))
+                    return "❌ No candidate IP found (neither IP1 nor IP2).";
+
                 string password = GeneratePassword(clientId, cleanWanMac);
 
                 var (reachable, ip, port) = await PickReachableIpAndPort(ipCandidate);
                 if (!reachable)
                 {
                     return $"❌ Could not reach device for SSH.\n" +
-                           $"- Candidate IP from DMP: {ipCandidate}\n" +
+                           $"- IP1: {details.Ip1} (found in {details.Ip1RuntimeMs} ms)\n" +
+                           $"- IP2: {details.Ip2} (found in {details.Ip2RuntimeMs} ms)\n" +
+                           $"- Candidate used: {ipCandidate}\n" +
                            $"- Tried ports: {DefaultPort}, {FallbackPort}\n" +
                            $"Tip: If this is a mobile/private IP, you may need the Ethernet/LAN IP or VPN.\n";
                 }
 
                 var log = $"Connecting to {serialNumber} at {ip}:{port} as {DefaultUsername}\n";
                 log += $"Using WAN MAC (clean): {cleanWanMac}\n";
+                log += $"IP1: {details.Ip1} (found in {details.Ip1RuntimeMs} ms), IP2: {details.Ip2} (found in {details.Ip2RuntimeMs} ms)\n";
 
                 using var sshClient = _sshFactory(ip, port, DefaultUsername, password);
                 sshClient.Connect();
@@ -92,7 +212,7 @@ namespace SshDeviceToolkit
         }
 
         /// <summary>
-        /// Returns Ip + WanMacRaw (untrimmed). Caller must use CleanWanMacForPassword before building password.
+        /// (Legacy) Returns Ip + WanMacRaw (untrimmed). Caller must use CleanWanMacForPassword before building password.
         /// NOTE: Tuple element *names* matter for callers using named access.
         /// </summary>
         public async Task<(string Ip, string WanMacRaw)?> GetDeviceDetailsFromDmpAsync(string serialNumber)
